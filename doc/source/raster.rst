@@ -347,7 +347,7 @@ You can see the the response clearly describes all variable which are available 
 
 Such a request would useful for retrieving data units in advance of downloading the data or for filtering according to driving model or institute.
 
-Downloading the actual data values themselves is also done with a DAP request. There are a couple differences, however. First, to download data, the client must be logged in via OpenID. Secondly, the URL template for the request is ``https://data.pacificclimate.org/data/[page_id]/[dataset_id].[format_extension]?[dap_selection]``
+Downloading the actual data values themselves is also done with a DAP request. There are a couple differences, however. The URL template for the request is ``https://data.pacificclimate.org/data/[page_id]/[dataset_id].[format_extension]?[dap_selection]``
 
 *format_extension* can be one of: nc, csv, ascii.
 

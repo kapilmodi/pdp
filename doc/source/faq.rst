@@ -18,14 +18,6 @@ Where can I report a bug or request a feature?
 
 Good question. Please see the :ref:`how-to-report-bugs` section in our :ref:`contributors-guide`.
 
-
-Why do I have to login and what is OpenID?
-------------------------------------------
-
-A user login is required to download data so that we can track usage and gauge the degree to which we are providing effective services for our users. We collect the e-mail addresses of users for the sole purpose of contacting you in the unlikely event that major errors are found in the data or when major changes to the data in the portal are made. E-mail addresses are the only personal information that PCIC will gather and will be kept secure.
-
-`OpenID <http://openid.net/get-an-openid/what-is-openid/>`_ allows you to use an existing account to sign in to multiple websites, without needing to create new passwords. For the user, OpenID provides the advantage that you can use a single account to log in to multiple websites.  For PCIC, OpenID provides the advantage that we do not have to maintain identity information and can minimize the personal information that we collect and store.
-
 What is a NetCDF file and how do I use it?
 ------------------------------------------
 

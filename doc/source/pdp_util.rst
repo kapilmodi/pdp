@@ -47,18 +47,6 @@ pdp_util.pcds_index
    :members:
    :special-members:
 
-OpenID Authentication
-=====================
-pdp_util.auth
--------------
-
-.. automodule:: pdp_util.auth
-   :members:
-   :special-members:
-
-.. autoclass:: pdp_util.auth.SessionStore
-   :members:
-
 Data Delivery
 =============
 pdp_util.agg
