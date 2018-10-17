@@ -1,14 +1,16 @@
 /*jslint browser: true, devel: true */
-/*global $, jQuery, OpenLayers, pdp, map, init_raster_map, processNcwmsLayerMetadata, getRasterControls, getRasterDownloadOptions, RasterDownloadLink, MetadataDownloadLink*/
-
-/* 
+/*global $, jQuery, OpenLayers, pdp, map, init_raster_map, processNcwmsLayerMetadata, 
+ * getRasterControls, getRasterDownloadOptions, getArchiveDisclaimer,
+ * RasterDownloadLink, MetadataDownloadLink
+ * 
  * This front end code is used to serve both the BCCAQ/BCSD version 1 
  * and BCCAQ version 2 data, with different portal back ends and available data. 
+ * 
  * Version 1 has the url_base and ensemble name downscaled_gcms_archive.
  * Version 2 url_base: downscaled_gcms, ensemble: bccaq_version_2
  * 
- * The only difference between portals is that the archive portal contains a
- * disclaimer. The portal knows which data it is serving by URL munging.
+ * Each version contains a link to the other at the top left; the archived
+ * version also has a disclaimer about only using the old data for comparisons.
  */
 
 "use strict";
@@ -31,10 +33,28 @@ $(document).ready(function () {
 
     document.getElementById("pdp-controls").appendChild(getRasterControls(pdp.ensemble_name));
     document.getElementById("pdp-controls").appendChild(getRasterDownloadOptions(true));
+    
+    const archivePortal = ($(location).attr('href').indexOf("archive") != -1);
+    
+    //Each portal links to the other one
+    let portalLink;
+    if(archivePortal) {
+      portalLink = pdp.createLink("portal-link", 
+          undefined,
+          pdp.app_root + "/downscaled_gcms/map/",
+          "Main Downscaled GCMS Portal");
+    }
+    else {
+      portalLink = pdp.createLink("portal-link", 
+          undefined,
+          pdp.app_root + "/downscaled_gcms_archive/map/",
+          "Archive Downscaled GCMS Portal");
+    }
+    document.getElementById("topnav").appendChild(portalLink)
+    
     //If we're on the archive portal, display a disclaimer.
-    if ($(location).attr('href').indexOf("archive") != -1) {
-      const disclaimer = "These methods are provided for research / comparison to older analysis purposes only, and caution with their use is advised.";
-      document.getElementById("pdp-controls").append(disclaimer);
+    if (archivePortal) {
+      document.getElementById("pdp-controls").appendChild(getArchiveDisclaimer());
     }
      
     // Data Download Link

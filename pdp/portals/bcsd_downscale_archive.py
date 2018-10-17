@@ -1,8 +1,9 @@
 '''This portal serves the version 1 BCCAQ downscaled (10km) data 
 and BCSD data for all of Canada. (This data has been superceded by
 the BCCAQ (4km) data.) This portal is identical, save the ensemble
-name and urlbase, to he bccaq_downscale portal, which serves the
-new data. They share a front end.
+name, title, urlbase, and model display formatting, to the 
+bccaq_downscale portal (bccaq_downscale.py), which serves the new
+data. They share a front end.
 '''
 
 from pdp import wrap_auth
@@ -20,9 +21,11 @@ url_base = 'downscaled_gcms_archive'
 
 class DownscaledEnsembleLister(EnsembleMemberLister):
     def list_stuff(self, ensemble):
+        print("BCSD BEGINNIGN TO LIST STUFF")
         for dfv in ensemble.data_file_variables:
             yield dfv.file.run.emission.short_name,\
-                dfv.file.run.model.short_name, dfv.netcdf_variable_name,\
+                dfv.file.run.model.short_name.replace('BCCAQ', 'BCCAQv1'),\
+                dfv.netcdf_variable_name,\
                 dfv.file.unique_id.replace('+', '-')
 
 
@@ -36,7 +39,7 @@ def data_server(config, ensemble_name):
 def portal(config):
     dsn = config['dsn']
     portal_config = {
-        'title': 'Statistically Downscaled GCM Scenario Archive',
+        'title': 'Statistically Downscaled GCM Scenarios - Archived Methods',
         'ensemble_name': ensemble_name,
         'js_files':
             wrap_mini([

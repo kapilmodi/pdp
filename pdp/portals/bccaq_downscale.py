@@ -1,8 +1,9 @@
 '''This portal serves the version 2 BCCAQ downscaled (4km) data
-for all Canada. It is identical, save for the ensemble name and 
-url base, to the version 2 BCCAQ & BCSD downscaled (10km) portal at 
-bcsd_downscale_archive.py, which has the older version of this data. 
-The two backends use the same frontend.
+for all Canada. It is very similar to the version 1 BCCAQ & BCSD 
+downscaled (10km) portal at bcsd_downscale_archive.py and uses the
+same frontend. Changes made to one probably need to be made to the 
+other.  
+Differences: ensemble name, url base, title, model name formatting.
 '''
 
 from pdp import wrap_auth
@@ -18,11 +19,14 @@ ensemble_name = 'bccaq_version_2'
 url_base = 'downscaled_gcms'
 
 
-class DownscaledEnsembleLister(EnsembleMemberLister):
+class BCCAQEnsembleLister(EnsembleMemberLister):
     def list_stuff(self, ensemble):
+        print("BCCAQ BEGINNING TO LIST STUFF")
         for dfv in ensemble.data_file_variables:
             yield dfv.file.run.emission.short_name,\
-                dfv.file.run.model.short_name, dfv.netcdf_variable_name,\
+                dfv.file.run.model.short_name,\
+                dfv.file.run.run_name,\
+                dfv.netcdf_variable_name,\
                 dfv.file.unique_id.replace('+', '-')
 
 
@@ -36,7 +40,7 @@ def data_server(config, ensemble_name):
 def portal(config):
     dsn = config['dsn']
     portal_config = {
-        'title': 'Statistically Downscaled GCM Scenarios',
+        'title': 'Statistically Downscaled GCM Scenarios - BCCAQv2',
         'ensemble_name': ensemble_name,
         'js_files':
             wrap_mini([
@@ -52,7 +56,7 @@ def portal(config):
     conf = raster_conf(dsn, config, ensemble_name, url_base)
     catalog_server = RasterCatalog(dsn, conf)  # No Auth
 
-    menu = DownscaledEnsembleLister(dsn)
+    menu = BCCAQEnsembleLister(dsn)
 
     metadata = RasterMetadata(dsn)
 
