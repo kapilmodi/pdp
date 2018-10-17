@@ -1,6 +1,8 @@
-'''The pdp.portals.bcsd_downscale_canada module configures a raster
-portal to serve BCSD and BCCAQ downscaled (10km) data over all of
-Canada.
+'''This portal serves the version 2 BCCAQ downscaled (4km) data
+for all Canada. It is identical, save for the ensemble name and 
+url base, to the version 2 BCCAQ & BCSD downscaled (10km) portal at 
+bcsd_downscale_archive.py, which has the older version of this data. 
+The two backends use the same frontend.
 '''
 
 from pdp import wrap_auth
@@ -12,7 +14,7 @@ from pdp_util.ensemble_members import EnsembleMemberLister
 from pdp.minify import wrap_mini
 from pdp.portals import updateConfig, raster_conf
 
-ensemble_name = 'bcsd_downscale_canada'
+ensemble_name = 'bccaq_version_2'
 url_base = 'downscaled_gcms'
 
 

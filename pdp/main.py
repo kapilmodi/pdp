@@ -26,11 +26,14 @@ from portals.bc_prism import data_server as bc_prism_data_server
 import portals.hydro_stn as hydro_stn
 from portals.hydro_stn import portal as hydro_stn_portal
 from portals.hydro_stn import data_server as hydro_stn_data_server
+    
+import portals.bcsd_downscale_archive as bcsd_archive
+from portals.bcsd_downscale_archive import portal as bcsd_archive_portal
+from portals.bcsd_downscale_archive import data_server as bcsd_archive_data_server
 
-import portals.bcsd_downscale_canada as bcsd_canada
-from portals.bcsd_downscale_canada import portal as bcsd_canada_portal
-from portals.bcsd_downscale_canada import data_server as \
-    bcsd_canada_data_server
+import portals.bccaq_downscale as bccaq
+from portals.bcsd_downscale import portal as bccaq_portal
+from portals.bcsd_downscale import data_server as bccaq_data_server
 
 import portals.bccaq_extremes as bccaq_extremes
 from portals.bccaq_extremes import portal as bccaq_extremes_portal
@@ -67,8 +70,12 @@ def initialize_frontend(global_config, use_auth=False, use_analytics=False):
         ('^/{}/.*$'.format(vic_gen1.url_base), vic_gen1_portal(global_config)),
         ('^/{}/.*$'.format(gridded_observations.url_base),
          gridded_observations_portal(global_config)),
-        ('^/{}/.*$'.format(bcsd_canada.url_base),
-         bcsd_canada_portal(global_config)),
+        #('^/{}/.*$'.format(bcsd_canada.url_base),
+        # bcsd_canada_portal(global_config)),
+        ('^/{}/.*$'.format(bcsd_archive.url_base),
+         bcsd_archive_portal(global_config)),
+        ('^/{}/.*$'.format(bccaq.url_base),
+         bccaq_portal(global_config)),        
         ('^/{}/.*$'.format(bccaq_extremes.url_base),
          bccaq_extremes_portal(global_config)),
         ('^/docs/.*$', docs_app),
@@ -91,8 +98,10 @@ def initialize_backend(global_config, use_auth=False, use_analytics=False):
     wsgi_app = PathDispatcher([
         ('^/{}/.*$'.format(bc_prism.url_base),
          bc_prism_data_server(global_config, bc_prism.ensemble_name)),
-        ('^/{}/.*$'.format(bcsd_canada.url_base),
-         bcsd_canada_data_server(global_config, bcsd_canada.ensemble_name)),
+        ('^/{}/.*$'.format(bcsd_archive.url_base),
+         bcsd_archive_data_server(global_config, bcsd_archive.ensemble_name)),
+        ('^/{}/.*$'.format(bccaq.url_base),
+         bccaq_data_server(global_config, bccaq.ensemble_name)),
         ('^/{}/.*$'.format(vic_gen1.url_base),
          vic_gen1_data_server(global_config, vic_gen1.ensemble_name)),
         ('^/{}/.*$'.format(gridded_observations.url_base),

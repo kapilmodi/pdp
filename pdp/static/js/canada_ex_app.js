@@ -1,6 +1,16 @@
 /*jslint browser: true, devel: true */
 /*global $, jQuery, OpenLayers, pdp, map, init_raster_map, processNcwmsLayerMetadata, getRasterControls, getRasterDownloadOptions, RasterDownloadLink, MetadataDownloadLink*/
 
+/* 
+ * This front end code is used to serve both the BCCAQ/BCSD version 1 
+ * and BCCAQ version 2 data, with different portal back ends and available data. 
+ * Version 1 has the url_base and ensemble name downscaled_gcms_archive.
+ * Version 2 url_base: downscaled_gcms, ensemble: bccaq_version_2
+ * 
+ * The only difference between portals is that the archive portal contains a
+ * disclaimer. The portal knows which data it is serving by URL munging.
+ */
+
 "use strict";
 
 $(document).ready(function () {
@@ -21,7 +31,12 @@ $(document).ready(function () {
 
     document.getElementById("pdp-controls").appendChild(getRasterControls(pdp.ensemble_name));
     document.getElementById("pdp-controls").appendChild(getRasterDownloadOptions(true));
-
+    //If we're on the archive portal, display a disclaimer.
+    if ($(location).attr('href').indexOf("archive") != -1) {
+      const disclaimer = "These methods are provided for research / comparison to older analysis purposes only, and caution with their use is advised.";
+      document.getElementById("pdp-controls").append(disclaimer);
+    }
+     
     // Data Download Link
     dlLink = new RasterDownloadLink($('#download-timeseries'), ncwmsLayer, undefined, 'nc', 'tasmax', '0:55152', '0:510', '0:1068');
     $('#data-format-selector').change(
