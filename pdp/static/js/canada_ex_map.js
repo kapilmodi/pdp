@@ -33,11 +33,13 @@ function init_raster_map() {
 
     na_osm = getNaBaseLayer(pdp.tilecache_url, 'North America OpenStreetMap', 'world_4326_osm', mapControls.projection);
 
+    let mapTime = "2000-01-01";
     //determine which portal we're serving to select default map to display.
     let default_dataset, default_var;
     if ($(location).attr('href').indexOf("archive") == -1) {
       default_dataset = "pr_day_BCCAQv2_ACCESS1-0_historical-rcp45_r1i1p1_19500101-21001231_Canada";
       default_var = "pr";
+      mapTime = mapTime + "T12:00:00.00Z";
     }
     else {
       default_dataset = "pr-tasmax-tasmin_day_BCSD-ANUSPLIN300-CanESM2_historical-rcp26_r1i1p1_19500101-21001231";
@@ -53,7 +55,7 @@ function init_raster_map() {
         layers: defaults.dataset + "/" + defaults.variable,
         transparent: "true",
         styles: "boxfill/ferret",
-        time: "2000-01-01",
+        time: mapTime,
         numcolorbands: 254,
         version: "1.1.1",
         srs: "EPSG:4326",
