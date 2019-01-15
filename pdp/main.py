@@ -32,8 +32,8 @@ from portals.bcsd_downscale_archive import portal as bcsd_archive_portal
 from portals.bcsd_downscale_archive import data_server as bcsd_archive_data_server
 
 import portals.bccaq_downscale as bccaq
-from portals.bcsd_downscale import portal as bccaq_portal
-from portals.bcsd_downscale import data_server as bccaq_data_server
+from portals.bccaq_downscale import portal as bccaq_portal
+from portals.bccaq_downscale import data_server as bccaq_data_server
 
 import portals.bccaq_extremes as bccaq_extremes
 from portals.bccaq_extremes import portal as bccaq_extremes_portal

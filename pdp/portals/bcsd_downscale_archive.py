@@ -21,7 +21,6 @@ url_base = 'downscaled_gcms_archive'
 
 class DownscaledEnsembleLister(EnsembleMemberLister):
     def list_stuff(self, ensemble):
-        print("BCSD BEGINNIGN TO LIST STUFF")
         for dfv in ensemble.data_file_variables:
             yield dfv.file.run.emission.short_name,\
                 dfv.file.run.model.short_name.replace('BCCAQ', 'BCCAQv1'),\
