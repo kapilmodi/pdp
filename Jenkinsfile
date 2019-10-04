@@ -8,25 +8,35 @@ node {
 
         pyenv.inside("-itu root") {
             stage('Dependency Installation') {
-                sh 'apt-get update'
-                sh 'apt-get install -y python-pip python-dev build-essential'
-                sh 'pip install tox'
-                sh 'apt-get install -y libhdf5-dev libnetcdf-dev libgdal-dev'
+                sh '''
+                apt-get update
+                apt-get install -y python-pip python-dev build-essential
+                pip install tox
+                apt-get install -y libhdf5-dev libnetcdf-dev libgdal-dev
+                export CPLUS_INCLUDE_PATH=/usr/include/gdal
+                export C_INCLUDE_PATH=/usr/include/gdal
+                pip install -i https://pypi.pacificclimate.org/simple/ -r requirements.txt -r test_requirements.txt -r deploy_requirements.txt
+                py.test -vv --tb=short -m "not crmpdb and not bulk_data" tests
+                '''
+                // sh 'apt-get update'
+                // sh 'apt-get install -y python-pip python-dev build-essential'
+                // sh 'pip install tox'
+                // sh 'apt-get install -y libhdf5-dev libnetcdf-dev libgdal-dev'
             }
 
-            stage('GDAL Setup') {
-                CPLUS_INCLUDE_PATH = '/usr/include/gdal'
-                C_INCLUDE_PATH = '/usr/include/gdal'
-            }
-
-            stage('Python Installation') {
-                sh 'python --version'
-                sh 'pip install -i https://pypi.pacificclimate.org/simple/ -r requirements.txt -r test_requirements.txt -r deploy_requirements.txt'
-            }
-
-            stage('Python Test Suite') {
-                sh 'py.test -vv --tb=short -m "not crmpdb and not bulk_data" tests'
-            }
+            // stage('GDAL Setup') {
+            //     CPLUS_INCLUDE_PATH = '/usr/include/gdal'
+            //     C_INCLUDE_PATH = '/usr/include/gdal'
+            // }
+            //
+            // stage('Python Installation') {
+            //     sh 'python --version'
+            //     sh 'pip install -i https://pypi.pacificclimate.org/simple/ -r requirements.txt -r test_requirements.txt -r deploy_requirements.txt'
+            // }
+            //
+            // stage('Python Test Suite') {
+            //     sh 'py.test -vv --tb=short -m "not crmpdb and not bulk_data" tests'
+            // }
         }
     }
 
