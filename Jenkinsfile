@@ -7,6 +7,17 @@ node {
         def pyenv = docker.image('python:2.7')
 
         pyenv.inside {
+            stage('Dependency Installation') {
+                sh 'apt-get install python-pip python-dev build-essential'
+                sh 'pip install tox'
+                sh 'apt-get install libhdf5-dev libnetcdf-dev libgdal-dev'
+            }
+
+            stage('GDAL Setup') {
+                CPLUS_INCLUDE_PATH = '/usr/include/gdal'
+                C_INCLUDE_PATH = '/usr/include/gdal'
+            }
+
             stage('Python Installation') {
                 sh 'python --version'
                 sh 'pip install -i https://pypi.pacificclimate.org/simple/ -r requirements.txt -r test_requirements.txt -r deploy_requirements.txt'
