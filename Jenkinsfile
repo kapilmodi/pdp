@@ -8,6 +8,7 @@ node {
 
         pyenv.inside("-itu root") {
             stage('Dependency Installation') {
+                sh 'apt-get update'
                 sh 'apt-get install python-pip python-dev build-essential'
                 sh 'pip install tox'
                 sh 'apt-get install libhdf5-dev libnetcdf-dev libgdal-dev'
