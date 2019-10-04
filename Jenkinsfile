@@ -6,11 +6,11 @@ node {
     withDockerServer([uri: PCIC_DOCKER]) {
         def pyenv = docker.image('python:2.7')
 
-        pyenv.inside {
+        pyenv.inside("-itu root") {
             stage('Dependency Installation') {
-                sh 'sudo apt-get install python-pip python-dev build-essential'
+                sh 'apt-get install python-pip python-dev build-essential'
                 sh 'pip install tox'
-                sh 'sudo apt-get install libhdf5-dev libnetcdf-dev libgdal-dev'
+                sh 'apt-get install libhdf5-dev libnetcdf-dev libgdal-dev'
             }
 
             stage('GDAL Setup') {
