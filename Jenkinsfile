@@ -24,8 +24,8 @@ node {
             }
 
             stage('GDAL Setup') {
-                sh 'CPLUS_INCLUDE_PATH=/usr/include/gdal'
-                sh 'C_INCLUDE_PATH=/usr/include/gdal'
+                sh 'export CPLUS_INCLUDE_PATH=/usr/include/gdal'
+                sh 'export C_INCLUDE_PATH=/usr/include/gdal'
             }
 
             stage('Better Insall GDAL') {
@@ -38,7 +38,7 @@ node {
             }
 
             stage('Python Installation') {
-                sh 'pip install -i https://pypi.pacificclimate.org/simple/ -r test_requirements.txt'
+                sh 'pip install -i https://pypi.pacificclimate.org/simple/ -r requirements.txt -r test_requirements.txt -r deploy_requirements.txt'
             }
 
             stage('Python Test Suite') {
