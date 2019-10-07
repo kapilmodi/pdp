@@ -38,7 +38,7 @@ node {
             }
 
             stage('Python Installation') {
-                sh 'pip install -i https://pypi.pacificclimate.org/simple/ -r requirements.txt -r test_requirements.txt -r deploy_requirements.txt'
+                sh 'pip install -i https://pypi.pacificclimate.org/simple/ -r test_requirements.txt'
             }
 
             stage('Python Test Suite') {
