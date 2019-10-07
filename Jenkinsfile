@@ -34,7 +34,8 @@ node {
             }
 
             stage('Python Test Suite') {
-                sh 'py.test -vv --tb=short -m "not crmpdb and not bulk_data" tests'
+                // sh 'py.test -vv --tb=short -m "not crmpdb and not bulk_data" tests'
+                sh 'py.test -vv --tb=short tests'
             }
         }
     }
