@@ -20,15 +20,21 @@ node {
                 sh 'apt-get update'
                 sh 'apt-get install -y python-pip python-dev build-essential'
                 sh 'pip install tox'
-                sh '''
-                apt-get install -y libhdf5-dev libnetcdf-dev libgdal-dev
-                pip install gdal==2.2
-                '''
+                sh 'apt-get install -y libhdf5-dev libnetcdf-dev libgdal-dev'
             }
 
             stage('GDAL Setup') {
                 sh 'CPLUS_INCLUDE_PATH=/usr/include/gdal'
                 sh 'C_INCLUDE_PATH=/usr/include/gdal'
+            }
+
+            stage('Better Insall GDAL') {
+                sh '''
+                pip download gdal==2.2.0
+                tar -xvzf ./GDAL-2.2.0.tar.gz
+                cd GDAL-2.2.0
+                python setup.py build_ext --include-dirs /usr/include/gdal
+                '''
             }
 
             stage('Python Installation') {
