@@ -1,5 +1,5 @@
 node {
-    withDockerServer([uri: PCIC_DOCKER]) {
+    // withDockerServer([uri: PCIC_DOCKER]) {
         stage('Code Collection') {
             checkout scm
         }
