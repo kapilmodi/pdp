@@ -24,8 +24,8 @@ node {
             }
 
             stage('GDAL Setup') {
-                CPLUS_INCLUDE_PATH = '/usr/include/gdal'
-                C_INCLUDE_PATH = '/usr/include/gdal'
+                sh 'CPLUS_INCLUDE_PATH=/usr/include/gdal'
+                sh 'C_INCLUDE_PATH=/usr/include/gdal'
             }
 
             stage('Python Installation') {
