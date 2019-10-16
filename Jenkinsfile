@@ -13,37 +13,45 @@ node {
     }
 
     withDockerServer([uri: PCIC_DOCKER]) {
-        def pyenv = docker.image('python:2.7')
+        // Use image with gdal already installed
+        def gdalenv = docker.image('pcic/geospatial-python')
 
-        pyenv.inside("-itu root") {
-            stage('Dependency Installation') {
+        gdalenv.inside('-u root') {
+            stage('Git Executable Install') {
                 sh 'apt-get update'
-                sh 'apt-get install -y python-pip python-dev build-essential'
-                sh 'pip install tox'
-                sh 'apt-get install -y libhdf5-dev libnetcdf-dev libgdal-dev'
+                sh 'apt-get install -y git'
             }
 
-            stage('GDAL Setup') {
-                sh 'export CPLUS_INCLUDE_PATH=/usr/include/gdal'
-                sh 'export C_INCLUDE_PATH=/usr/include/gdal'
-            }
-
-            stage('Better Insall GDAL') {
-                sh '''
-                pip download gdal==2.2.0
-                tar -xvzf ./GDAL-2.2.0.tar.gz
-                cd GDAL-2.2.0
-                python setup.py build_ext --include-dirs /usr/include/gdal
-                '''
-            }
-
-            stage('Python Installation') {
-                sh 'pip install -i https://pypi.pacificclimate.org/simple/ -r test_requirements.txt'
+            stage('Python Installs') {
+                sh 'pip install -i https://pypi.pacificclimate.org/simple/ -r requirements.txt -r test_requirements.txt -r deploy_requirements.txt'
+                sh 'pip install -e .'
             }
 
             stage('Python Test Suite') {
                 sh 'py.test -vv --tb=short -m "not crmpdb and not bulk_data" tests'
             }
+        }
+    }
+
+    stage('Clean Workspace') {
+        cleanWs()
+    }
+
+    stage('Recollect Code') {
+        checkout scm
+    }
+
+    stage('Build Image') {
+        String image_name = 'pdp'
+        String branch_name = BRANCH_NAME.toLowerCase()
+
+        // Update image name if we are not on the master branch
+        if (branch_name != 'master') {
+            image_name = image_name + '/' + branch_name
+        }
+
+        withDockerServer([uri: PCIC_DOCKER]) {
+            def image = docker.build(image_name)
         }
     }
 }
